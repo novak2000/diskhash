@@ -129,7 +129,7 @@ void* dht_lookup(const HashTable*, const char* key);
  * will mean an out-of-memory error (when dht fails to allocate memory, it does
  * not try to allocate memory for an error message).
  */
-int dht_insert(HashTable*, const char* key, const void* data, char** err);
+long long dht_insert(HashTable*, const char* key, const void* data, char** err);
 
 /** Preallocate memory for the table.
  *

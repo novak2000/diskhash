@@ -430,7 +430,7 @@ void* dht_lookup(const HashTable* ht, const char* key) {
     return NULL;
 }
 
-int dht_insert(HashTable* ht, const char* key, const void* data, char** err) {
+long long dht_insert(HashTable* ht, const char* key, const void* data, char** err) {
     if (!(ht->flags_ & HT_FLAG_CAN_WRITE)) {
         if (err) { *err = strdup("Hash table is read-only. Cannot insert."); }
         return -EACCES;
@@ -448,7 +448,8 @@ int dht_insert(HashTable* ht, const char* key, const void* data, char** err) {
         HashTableEntry et = entry_at(ht, h);
         if (entry_empty(et)) break;
         if (!strcmp(et.ht_key, key)) {
-            return 0;
+            long long tmp = *( (long long*) et.ht_data);
+            return tmp;
         }
         ++h;
         if (h == cheader_of(ht)->cursize_) {
@@ -462,6 +463,6 @@ int dht_insert(HashTable* ht, const char* key, const void* data, char** err) {
     strcpy((char*)et.ht_key, key);
     memcpy(et.ht_data, data, cheader_of(ht)->opts_.object_datalen);
 
-    return 1;
+    return -1;
 }
 

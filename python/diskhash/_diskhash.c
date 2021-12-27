@@ -58,8 +58,8 @@ PyObject* htInsert(htObject* self, PyObject* args) {
     }
     Py_buffer* buf = PyMemoryView_GET_BUFFER(v);
     char* err;
-    int r = dht_insert(self->ht, k, buf->buf, &err);
-    if (r < 0) {
+    long long r = dht_insert(self->ht, k, buf->buf, &err);
+    if (r < -1) {
         if (!err) {
             return PyErr_NoMemory();
         }
@@ -67,7 +67,7 @@ PyObject* htInsert(htObject* self, PyObject* args) {
         free(err);
         return NULL;
     }
-    return PyLong_FromLong(r);
+    return PyLong_FromLongLong(r);
 }
 
 PyObject* htLen(htObject* self, PyObject* args) {

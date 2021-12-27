@@ -72,11 +72,11 @@ struct DiskHash {
          * Returns true if element was inserted (else false and nothing is
          * modified).
          */
-        bool insert(const char* key, const T& val) {
+        long long insert(const char* key, const T& val) {
             char* err = nullptr;
-            const int icode = dht_insert(ht_, key, &val, &err); 
-            if (icode == 0) return false;
-            if (icode == 1) return true;
+            const long long icode = dht_insert(ht_, key, &val, &err); 
+            if (icode == -1) return -1;
+            if (icode >=0) return icode;
             if (!err) { throw std::bad_alloc(); }
             std::string error = "Error inserting key '" + std::string(key) + "': " + std::string(err);
             std::free(err);
